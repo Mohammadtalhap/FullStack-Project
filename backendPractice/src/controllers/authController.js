@@ -1,9 +1,9 @@
 import bcrypt from 'bcryptjs';
 import UserModel from '../models/userModel.js';
+import { changePassword, registerUser } from '../services/authService.js';
 import generateToken from '../utils/generateToken.js';
-import { registerUser } from '../services/authService.js';
 
-export const registerUserController = async (req, res) => {
+export const registerController = async (req, res) => {
     try {
         const { name, email } = req.body;
         const profileImage = req.file ? req.file.filename : 'default.png';
@@ -12,7 +12,7 @@ export const registerUserController = async (req, res) => {
 
         const token = generateToken(user._id);
 
-        res.status(201).json({
+        return res.status(201).json({
             success: true,
             message: "User registered successfully",
             token,
@@ -24,18 +24,28 @@ export const registerUserController = async (req, res) => {
             },
         });
     } catch (error) {
-        res.status(500).json({ message: "Error Registering User", error: error.message });
+        return res.status(500).json({ message: "Error Registering User", error: error.message });
     }
 }
 
-export const loginUser = async (req, res) => {
+export const loginController = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password } = req.body || {};
+        console.log("Email: ", email, "Password: ", password);
+
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email and password are required" });
+        }
 
         const user = await UserModel.findOne({ email });
+
+        if (!user) {
+            return res.status(400).json({ message: "Invalid email or password" });
+        }
+
         const isMatch = await bcrypt.compare(password, user.password);
 
-        if (!user || !isMatch) {
+        if (!isMatch) {
             return res.status(400).json({ message: "Invalid email or password" });
         }
 
@@ -55,5 +65,28 @@ export const loginUser = async (req, res) => {
 
     } catch (error) {
         res.status(500).json({ message: error.message });
+    }
+}
+
+export const changePasswordController = async (req, res) => {
+    try {
+        const { currentPassword, newPassword } = req.body;
+
+        await changePassword({
+            userId: req.user._id,
+            currentPassword,
+            newPassword
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Password changed successfully",
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Error Changing Password", 
+            error: error.message
+        });
     }
 }

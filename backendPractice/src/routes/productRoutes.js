@@ -12,7 +12,7 @@ import upload from '../middlewares/upload.js';
 const router = Router();
 
 router.post('/products', upload.single('image'), authMiddleware, createProduct);
-router.get('/products', getAllProducts);
+router.get('/products',authMiddleware, getAllProducts);
 router.get('/products/:id', getProductById);
 router.put('/products/:id', upload.single('image'), authMiddleware, updateProduct);
 router.delete('/products/:id', authMiddleware, deleteProduct);
