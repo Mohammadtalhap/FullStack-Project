@@ -5,6 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import ProductsPage from "./pages/ProductsPage";
 import ProfilePage from "./pages/ProfilePage";
 import RegisterPage from "./pages/RegisterPage";
+import ChangePassword from "./pages/ChangePassword";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         >
           <Route path="/" element={<ProductsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/change-password" element={<ChangePassword />} />
         </Route>
       </Routes>
     </div>

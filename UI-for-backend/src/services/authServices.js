@@ -30,3 +30,27 @@ export async function loginUser(user) {
     }
     return data;
 }
+
+export const changePassword = async ({ currentPassword, newPassword }) => {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+        `${BASE_URL}/auth/change-password`,
+        {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ currentPassword, newPassword })
+        }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.message || "Failed to change Password...");
+    }
+
+    return data;
+}

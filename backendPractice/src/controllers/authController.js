@@ -85,7 +85,7 @@ export const changePasswordController = async (req, res) => {
 
     } catch (error) {
         return res.status(500).json({
-            message: "Error Changing Password", 
+            message: error.message, 
             error: error.message
         });
     }
