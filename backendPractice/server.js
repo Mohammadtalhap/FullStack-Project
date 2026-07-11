@@ -5,7 +5,6 @@ import connectDb from './src/config/db.js';
 import transporter from './src/config/mail.js';
 import authRoutes from './src/routes/authRoutes.js';
 import productRoutes from './src/routes/productRoutes.js';
-import { generateResetToken } from './src/utils/token.js';
 
 dotenv.config();
 
@@ -47,7 +46,3 @@ const startServer = async () => {
 }
 
 startServer();
-
-console.log(generateResetToken());
-console.log(generateResetToken());
-console.log(generateResetToken());

@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import UserModel from '../models/userModel.js';
-import { changePassword, registerUser } from '../services/authService.js';
+import { changePassword, forgotPassword, registerUser, resetPassword } from '../services/authService.js';
 import generateToken from '../utils/generateToken.js';
 
 export const registerController = async (req, res) => {
@@ -72,6 +72,9 @@ export const changePasswordController = async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
 
+        await forgotPassword({ email: req.user.email });
+
+
         await changePassword({
             userId: req.user._id,
             currentPassword,
@@ -85,8 +88,47 @@ export const changePasswordController = async (req, res) => {
 
     } catch (error) {
         return res.status(500).json({
-            message: error.message, 
+            message: error.message,
             error: error.message
+        });
+    }
+}
+
+export const forgotPasswordController = async (req, res) => {
+    try {
+        const { email } = req.body;
+
+        await forgotPassword(email);
+
+        res.status(200).json({
+            success: true,
+            message: "Password reset email sent successfully."
+        });
+
+    } catch (error) {
+
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+}
+
+export const resetPasswordController = async (req, res) => {
+    try {
+        const { email, verificationCode, newPassword } = req.body;
+
+        await resetPassword({ email, verificationCode, newPassword });
+
+        res.status(200).json({
+            status: true,
+            message: "Password reset successfully"
+        });
+
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
         });
     }
 }

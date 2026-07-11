@@ -21,6 +21,14 @@ const userSchema = new mongoose.Schema(
         profileImage: {
             type: String,
             default: "default.png",
+        },
+        verificationCode: {
+            type: String,
+            default: null,
+        },
+        verificationCodeExpires: {
+            type: Date,
+            default: null,
         }
     },
     {
