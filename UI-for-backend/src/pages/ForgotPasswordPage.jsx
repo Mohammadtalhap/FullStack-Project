@@ -15,7 +15,7 @@ function ForgotPasswordPage() {
     setIsLoading(true);
 
     try {
-      await forgotPassword(email);
+      await forgotPassword(email.trim());
 
       navigate("/reset-password", { state: { email } });
     } catch (error) {

@@ -72,9 +72,6 @@ export const changePasswordController = async (req, res) => {
     try {
         const { currentPassword, newPassword } = req.body;
 
-        await forgotPassword({ email: req.user.email });
-
-
         await changePassword({
             userId: req.user._id,
             currentPassword,

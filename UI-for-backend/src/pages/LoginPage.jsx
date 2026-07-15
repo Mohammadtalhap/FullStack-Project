@@ -11,6 +11,7 @@ function LoginPage() {
     password: "",
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,7 +30,7 @@ function LoginPage() {
       console.log("Data: ", response);
       navigate("/");
     } catch (error) {
-      console.log("Error: ", error);
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -44,6 +45,12 @@ function LoginPage() {
       <div className="fixed inset-0 m-auto login-form h-fit w-[340px] bg-white shadow-2xl py-10 px-6 rounded-2xl z-50">
         <h1 className="text-3xl font-semibold mb-10">Login Form</h1>
         <form action={handleLogin} className="space-y-4">
+          {/* Error Message */}
+          {error && (
+            <p className="bg-red-100 rounded text-red-600 text-sm p-3">
+              {error}
+            </p>
+          )}
           {/* Email Field */}
           <label htmlFor="email" className="">
             Email:

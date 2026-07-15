@@ -16,6 +16,7 @@ function RegisterPage() {
   const [profileImage, setProfileImage] = useState("");
   const [preview, setPreview] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,7 +48,7 @@ function RegisterPage() {
       login(response.user, response.token);
       navigate("/");
     } catch (error) {
-      console.log("Error: ", error);
+      setError(error.message);
     } finally {
       setIsLoading(false);
     }
@@ -61,6 +62,12 @@ function RegisterPage() {
       <div className="fixed inset-0 m-auto Registeration-form h-fit w-[340px] bg-white shadow-2xl py-10 px-6 rounded-2xl z-50">
         <h1 className="text-3xl font-semibold mb-10">Registration Form</h1>
         <form action={handleRegister} className="space-y-4">
+          {/* Error Message */}
+          {error && (
+            <p className="bg-red-100 p-3 text-sm text-red-600">
+              {error}
+            </p>
+          )}
           {/* Name Field */}
           <label htmlFor="name" className="">
             Name:
