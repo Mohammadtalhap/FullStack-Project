@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { loginUser } from "../services/authServices.js";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
-import { Link } from "react-router-dom";
+import { loginUser } from "../services/authServices.js";
 
 function LoginPage() {
   let navigate = useNavigate();
@@ -60,20 +59,31 @@ function LoginPage() {
             onChange={handleChange}
           />
           {/* Password Field */}
-          <label htmlFor="password" className="">
-            Password:
-          </label>
-          <input
-            type="password"
-            name="password"
-            className="w-full border-2 border-gray-300 rounded-lg px-3 py-1"
-            id="password"
-            placeholder="Enter your password"
-            value={formData.password}
-            required
-            minLength="6"
-            onChange={handleChange}
-          />
+          <div className="">
+            <div className="flex justify-between">
+              <label htmlFor="password" className="">
+                Password:
+              </label>
+              {/* Forgot password link */}
+              <Link
+                to="/forgot-password"
+                className="text-sm text-sky-600 cursor-pointer hover:underline"
+              >
+                Forgot Password?
+              </Link>
+            </div>
+            <input
+              type="password"
+              name="password"
+              className="w-full border-2 border-gray-300 rounded-lg px-3 py-1"
+              id="password"
+              placeholder="Enter your password"
+              value={formData.password}
+              required
+              minLength="6"
+              onChange={handleChange}
+            />
+          </div>
           {/* Buttons */}
           <div className="flex gap-3 mt-6">
             <Link
