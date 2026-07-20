@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import connectDb from './src/config/db.js';
 import transporter from './src/config/mail.js';
+import { swaggerSpec, swaggerUi } from "./src/config/swagger.js";
 import authRoutes from './src/routes/authRoutes.js';
 import productRoutes from './src/routes/productRoutes.js';
 
@@ -17,6 +18,7 @@ app.use(cors());
 app.use("/uploads", express.static("src/public/images/uploads"));
 app.use(productRoutes);
 app.use(authRoutes);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get('/', (req, res) => {
     res.send("Hello From Backend !!");
